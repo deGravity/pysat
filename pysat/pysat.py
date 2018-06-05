@@ -89,6 +89,17 @@ class Solver(object):
 
         pass
 
+    def step(self, next_lit):
+        self.decide(next_lit)
+        conflict_clause = self.propogate()
+        if isinstance(conflict_clause, Clause):
+            return False # UNSAT
+        elif self.popup_literal() is None:
+            return True # SAT
+        else:
+            return (self.lit_list, self.clause_list, self.learnt_list)
+
+
     def propagate(self):
         """propagate clause, reloading watching literal
 
